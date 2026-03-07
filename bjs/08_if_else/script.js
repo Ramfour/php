@@ -1,22 +1,35 @@
 document.querySelector('#game-card').hidden = true;
-let minValue = document.querySelector('#inputMin').value;
-let maxValue = document.querySelector('#inputMax').value;
-document.querySelector('#startGameButton').addEventListener('click', function(){
-    minValue = parseInt(minValue) || 0 ;
-    maxValue = parseInt(maxValue) || 0 ;
+    let answerNumber;
+    let orderNumber ;
+    let gameRun;
+    let minValue;
+    let maxValue;
+function startGame (){
+    minValue = parseInt(document.querySelector('#inputMin').value) || 0;
+    minValue = (minValue>999)? 999: (minValue<-999)? -999: minValue;
+    maxValue = parseInt(document.querySelector('#inputMax').value) || 100;
+    maxValue = (maxValue>999)? 999: (maxValue<-999)? -999: maxValue;
+    document.querySelector('#inputMin').value = "";
+    document.querySelector('#inputMax').value = "";
+    console.log(minValue);
+    console.log(maxValue);
     document.querySelector('#game-card').hidden = false;
     document.querySelector('#inputCard').hidden = true;
-})
+    alert(`Загадайте любое целое число от ${minValue} до ${maxValue}, а я его угадаю`);
+    answerNumber  = Math.floor((minValue + maxValue) / 2);
+    orderNumber = 1;
+    gameRun = true;
+    orderNumberField.innerText = orderNumber;
+    answerField.innerText = generateAnswerVariants(answerNumber);
+    console.log(answerNumber);
+    document.querySelector('#startGameButton').removeEventListener('click', startGame);
+}
 
-alert(`Загадайте любое целое число от ${minValue} до ${maxValue}, а я его угадаю`);
-let answerNumber  = Math.floor((minValue + maxValue) / 2);
-let orderNumber = 1;
-let gameRun = true;
+document.querySelector('#startGameButton').addEventListener('click', startGame);
 const orderNumberField = document.getElementById('orderNumberField');
 const answerField = document.getElementById('answerField');
 
-orderNumberField.innerText = orderNumber;
-answerField.innerText = generateAnswerVariants(answerNumber);
+
 // Функция для генерации вариантов вопроса
 function generateAnswerVariants(answerNumber){
     let answerPhrase;
@@ -39,13 +52,10 @@ function generateAnswerVariants(answerNumber){
 
 
 document.getElementById('btnRetry').addEventListener('click', function () {
-    minValue = 0;
-    maxValue = 100;
-    orderNumber = 1;
-    gameRun = true;
-    orderNumberField.innerText = orderNumber;
-    answerNumber  = Math.floor((minValue + maxValue) / 2);
-    answerField.innerText = `Вы загадали число ${answerNumber }?`;
+    document.querySelector('#game-card').hidden = true;
+    document.querySelector('#inputCard').hidden = false;
+    document.querySelector('#startGameButton').addEventListener('click', startGame);
+
 })
 
 document.getElementById('btnOver').addEventListener('click', function () {
