@@ -10,7 +10,36 @@
 </head>
 <body>
 <div class="container">
-    <div class="row game-card align-items-center">
+    <div class="row game-card align-items-center" id="inputCard">
+        <div class="col col-md-4 offset-md-4">
+            <div class="card text-center">
+                <div class="card-header">
+                    <p class="m-0">Введите минимальное и максимальное число <br> (от -999 до 999)</p>
+                </div>
+                <div class="card-body">
+                    <div class="row no-gutters">
+                        <div class="col">
+                            <h3 class="card-title m-0"><span >Минимальное число</span></h3>
+                            <input type="text" id="inputMin">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row no-gutters">
+                        <div class="col">
+                            <h3 class="card-title m-0"><span >Максимальное число</span></h3>
+                            <input type="text" id="inputMax">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-link" id="startGameButton">Подтвердить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row game-card align-items-center" id="game-card">
         <div class="col col-md-4 offset-md-4">
             <div class="card text-center">
                 <div class="card-header">
