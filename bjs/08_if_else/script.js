@@ -32,8 +32,6 @@ function startGame (){
     document.querySelector('#max-text').textContent = maxValue;
     document.querySelector('#inputMin').value = "";
     document.querySelector('#inputMax').value = "";
-    console.log(minValue);
-    console.log(maxValue);
     document.querySelector('#game-card').hidden = false;
     document.querySelector('#inputCard').hidden = true;
     answerNumber  = Math.floor((minValue + maxValue) / 2);
@@ -131,7 +129,7 @@ document.getElementById('btnOver').addEventListener('click', function () {
 
 document.getElementById('btnLess').addEventListener('click', function () {
     if (gameRun){
-        if (minValue === maxValue){
+        if (minValue === maxValue || minValue>maxValue){
             const phraseRandom = Math.round( Math.random());
             const answerPhrase = (phraseRandom === 1) ?
                 `Вы загадали неправильное число!\n\u{1F914}` :
@@ -145,6 +143,7 @@ document.getElementById('btnLess').addEventListener('click', function () {
             orderNumber++;
             orderNumberField.innerText = orderNumber;
             answerField.innerText = generateAnswerVariants(answerNumber);
+            
         }
     }
 })
