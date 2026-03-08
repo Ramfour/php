@@ -1,9 +1,22 @@
 document.querySelector('#game-card').hidden = true;
-    let answerNumber;
-    let orderNumber ;
-    let gameRun;
-    let minValue;
-    let maxValue;
+let answerNumber;
+let orderNumber ;
+let gameRun;
+let minValue;
+let maxValue;
+
+// Глобальные массивы - константы, где хранятся названия чисел
+
+const UNITS_ARRAY = ['сто', 'двести', 'триста', 'четыреста', 'пятьсот', 'шестьсот', 'семьсот', 'восемьсот', 'девятьсот'];
+
+// При избавлении от сотен и переходу к работе с десятками, нужно проверить онтносится ли число к этому массиву
+// иначе перейти далее
+const TEN_TO_NINETEEN= ['десять', 'одиннадцать', 'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать', 'девятнадцать'];
+
+const TENS = ['двадцать', 'тридцать', 'сорок', 'пятьдесят', 'шестьдесят', 'семьдесят', 'восемьдесят', 'девяносто'];
+const UNITS = [ 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять'];
+
+
 function startGame (){
     minValue = parseInt(document.querySelector('#inputMin').value) || 0;
     minValue = (minValue>999)? 999: (minValue<-999)? -999: minValue;
@@ -30,19 +43,48 @@ const orderNumberField = document.getElementById('orderNumberField');
 const answerField = document.getElementById('answerField');
 
 
-// Функция для генерации вариантов вопроса
+// Функция для генерации вариантов вопроса с преобразованием числа в текстовый вид
 function generateAnswerVariants(answerNumber){
     let answerPhrase;
+    let answerText= '';
+    
+    // проверка для сохранения знака числа и одновременно текстовая переменная для ответа
+    let minusText=(answerNumber<0)? "минус ": '';
+    let buffAnswerNumber = Math.abs(answerNumber);
+    if (buffAnswerNumber==0){
+        answerText += "ноль"
+    }
+    if (minusText) {
+        answerText += `${minusText}`;
+    }
+    if ((buffAnswerNumber/100)>=1) {
+        answerText += `${UNITS_ARRAY[Math.trunc(buffAnswerNumber/100) - 1]} `;
+        buffAnswerNumber = buffAnswerNumber%100;
+    }
+    if (buffAnswerNumber>= 10 && buffAnswerNumber<= 19) {
+        answerText += `${TEN_TO_NINETEEN[buffAnswerNumber%10]} `;
+        buffAnswerNumber = null;
+    }
+    if ((buffAnswerNumber/10)>=1){
+            answerText += `${TENS[Math.trunc(buffAnswerNumber/10) - 2]} `;
+            buffAnswerNumber = buffAnswerNumber%10;
+            if (buffAnswerNumber>0){
+                answerText += `${UNITS[buffAnswerNumber-1]}`;
+                buffAnswerNumber = null;
+                
+            } 
+        }
+
     const phraseRandom = Math.round( Math.random()*3);
     switch (phraseRandom) {
         case 0:
-            answerPhrase= `Да это легко! Ты загадал ${answerNumber}?`;
+            answerPhrase= `Да это легко! Ты загадал ${answerText}?`;
             break;
         case 1:
-            answerPhrase= `Вы загадали число ${answerNumber }?`;
+            answerPhrase= `Вы загадали число ${answerText }?`;
             break;
         default:
-            answerPhrase= `Может быть это ${answerNumber }?`;
+            answerPhrase= `Может быть это ${answerText }?`;
     }
 
     return answerPhrase;
