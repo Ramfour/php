@@ -22,20 +22,27 @@ function startGame (){
     minValue = (minValue>999)? 999: (minValue<-999)? -999: minValue;
     maxValue = parseInt(document.querySelector('#inputMax').value) || 100;
     maxValue = (maxValue>999)? 999: (maxValue<-999)? -999: maxValue;
+    // Проверка на правильность введения
+    if (minValue>maxValue){
+        [minValue,maxValue] =[maxValue,minValue] 
+
+    }
+    
+    document.querySelector('#min-text').textContent = minValue;
+    document.querySelector('#max-text').textContent = maxValue;
     document.querySelector('#inputMin').value = "";
     document.querySelector('#inputMax').value = "";
     console.log(minValue);
     console.log(maxValue);
     document.querySelector('#game-card').hidden = false;
     document.querySelector('#inputCard').hidden = true;
-    alert(`Загадайте любое целое число от ${minValue} до ${maxValue}, а я его угадаю`);
     answerNumber  = Math.floor((minValue + maxValue) / 2);
     orderNumber = 1;
     gameRun = true;
     orderNumberField.innerText = orderNumber;
     answerField.innerText = generateAnswerVariants(answerNumber);
     console.log(answerNumber);
-    document.querySelector('#startGameButton').removeEventListener('click', startGame);
+    
 }
 
 document.querySelector('#startGameButton').addEventListener('click', startGame);
@@ -68,13 +75,15 @@ function generateAnswerVariants(answerNumber){
     if ((buffAnswerNumber/10)>=1){
             answerText += `${TENS[Math.trunc(buffAnswerNumber/10) - 2]} `;
             buffAnswerNumber = buffAnswerNumber%10;
-            if (buffAnswerNumber>0){
-                answerText += `${UNITS[buffAnswerNumber-1]}`;
-                buffAnswerNumber = null;
-                
-            } 
         }
-
+    if (buffAnswerNumber>0){
+        answerText += `${UNITS[buffAnswerNumber-1]}`;
+        buffAnswerNumber = null;
+        
+    } 
+    if (answerText.length>=20) {
+        answerText = answerNumber
+    }
     const phraseRandom = Math.round( Math.random()*3);
     switch (phraseRandom) {
         case 0:
@@ -96,7 +105,7 @@ function generateAnswerVariants(answerNumber){
 document.getElementById('btnRetry').addEventListener('click', function () {
     document.querySelector('#game-card').hidden = true;
     document.querySelector('#inputCard').hidden = false;
-    document.querySelector('#startGameButton').addEventListener('click', startGame);
+    
 
 })
 
@@ -160,3 +169,9 @@ document.getElementById('btnEqual').addEventListener('click', function () {
             }
 })
 
+document.querySelector('#min-number').addEventListener('click', ()=>{
+        document.querySelector('#inputMin').value = -999;
+})
+document.querySelector('#max-number').addEventListener('click', ()=>{
+        document.querySelector('#inputMax').value = 999;
+})

@@ -1,4 +1,27 @@
+body{
+    background: linear-gradient(45deg, white, rgba(1, 158, 158, 0.774));
+    background-size: cover;
+    
+}
 .game-card {
     height: 100vh;
-    font-family: 'Open Sans', monospace;
+    font-family: Arial, Helvetica, sans-serif;
+    text-shadow: 1px 1px 1px rgba(5, 40, 135, 0.423);
+}
+.btn.btn-link{
+    text-decoration: none;
+    color: black;
+
+}
+.btn.btn-link:hover{
+    text-shadow: 1px 1px 1px rgb(5, 40, 135);
+    background-color: rgba(0, 0, 0, 0.08);
+}
+
+#min-number:hover, #max-number:hover {
+    text-shadow: 1px 1px 1px rgb(5, 40, 135);
+    background-color: rgba(0, 0, 0, 0.08);   
+}
+.m-0{
+    user-select: none;
 }
