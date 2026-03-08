@@ -129,7 +129,7 @@ document.getElementById('btnOver').addEventListener('click', function () {
 
 document.getElementById('btnLess').addEventListener('click', function () {
     if (gameRun){
-        if (minValue === maxValue || minValue>maxValue){
+        if (minValue === maxValue || answerNumber - 1 < minValue){
             const phraseRandom = Math.round( Math.random());
             const answerPhrase = (phraseRandom === 1) ?
                 `Вы загадали неправильное число!\n\u{1F914}` :
