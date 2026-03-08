@@ -8,7 +8,7 @@
 ---
 ## В ходе данной практики:
 
-1. Дорабатал приложение "Калькулятор" 
+1. Доработал приложение "Калькулятор" 
    * работа с форками
    * отработка навыка работы с Math и численными/строковыми переменными
 2. Доработал приложение "Угадайка":
@@ -20,4 +20,5 @@
 
 
 [Unofficial JavaScript logo by Chris Williams, from GitHub logo.js, under very permissive licensing (WTFPL).](https://github.com/voodootikigod/logo.js)
+
 
