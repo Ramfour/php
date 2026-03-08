@@ -1,39 +1,31 @@
 body{
-     background: linear-gradient(45deg, white, rgba(90, 240, 240, 0.774));
-}
-.calc-row {
-    height: 100vh;
-    font-family: 'Share Tech Mono', monospace;
+    background: linear-gradient(45deg, white, rgba(90, 240, 240, 0.774));
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content:space-around;
+    user-select: none;
 }
 
-.input-window {
-    text-align: end;
-    font-size: x-large;
-}
-#back-container{
-    display: flex;
-    align-items: center;
-    justify-content: left;
-}
-.back-to-main{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+a {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 25px;
+    font-size: 35px;
     text-shadow: 1px 1px 1px rgba(5, 40, 135, 0.423);
-    height: 30px;
-    width: 150px;
+    height: 100px;
+    width: 250px;
+    display: flex;
+    align-items: center;
     justify-content:center;
     border-radius: 5%;
     background-color: rgba(236, 79, 241, 0.179);
     box-shadow: 4px 4px 4px rgba(34, 0, 255, 0.309);
     border: 2px ridge rgba(230, 65, 208, 0.6);
     text-decoration: none;
-    
 }
-.back-to-main:hover{
+
+a:hover{
     text-shadow: 1px 1px 1px rgb(4, 19, 60);
     background-color: rgba(79, 79, 79, 0.207);
-    text-decoration: none;
 }

@@ -25,3 +25,25 @@ body{
 .m-0{
     user-select: none;
 }
+.back-to-main{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 25px;
+    text-shadow: 1px 1px 1px rgba(5, 40, 135, 0.423);
+    height: 30px;
+    width: 150px;
+    justify-content:center;
+    border-radius: 5%;
+    background-color: rgba(236, 79, 241, 0.179);
+    box-shadow: 4px 4px 4px rgba(34, 0, 255, 0.309);
+    border: 2px ridge rgba(230, 65, 208, 0.6);
+    text-decoration: none;
+    
+}
+.back-to-main:hover{
+    text-shadow: 1px 1px 1px rgb(4, 19, 60);
+    background-color: rgba(79, 79, 79, 0.207);
+    text-decoration: none;
+}
