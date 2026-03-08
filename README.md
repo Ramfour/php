@@ -16,7 +16,7 @@
    * if-else, работа с массивами, тернарными операторами, switch
 3. [Еще не пройдено]
 ---
-[Github Pages](https://ramfour.github.io/JS-start/)
+[Github Pages](https://ramfour.github.io/php/)
 
 
 [Unofficial JavaScript logo by Chris Williams, from GitHub logo.js, under very permissive licensing (WTFPL).](https://github.com/voodootikigod/logo.js)
