@@ -130,7 +130,7 @@ document.getElementById('btnOver').addEventListener('click', function () {
 document.getElementById('btnLess').addEventListener('click', function () {
     if (gameRun){
         // Если границы уже равны или после вычитания 1 верхняя граница станет меньше нижней,
-        // то число угадать невозможно — завершаем игру.
+        // то число угадать невозможно — завершаем игру. Происходит из-за округления вниз (ассиметрия)
         if (minValue === maxValue || answerNumber - 1 < minValue){
             const phraseRandom = Math.round( Math.random());
             const answerPhrase = (phraseRandom === 1) ?
