@@ -6,28 +6,26 @@ let minValue;
 let maxValue;
 
 // Глобальные массивы - константы, где хранятся названия чисел
-
 const UNITS_ARRAY = ['сто', 'двести', 'триста', 'четыреста', 'пятьсот', 'шестьсот', 'семьсот', 'восемьсот', 'девятьсот'];
 
 // При избавлении от сотен и переходу к работе с десятками, нужно проверить онтносится ли число к этому массиву
 // иначе перейти далее
 const TEN_TO_NINETEEN= ['десять', 'одиннадцать', 'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать', 'девятнадцать'];
-
 const TENS = ['двадцать', 'тридцать', 'сорок', 'пятьдесят', 'шестьдесят', 'семьдесят', 'восемьдесят', 'девяносто'];
 const UNITS = [ 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять'];
 
 
 function startGame (){
     minValue = parseInt(document.querySelector('#inputMin').value) || 0;
-    minValue = (minValue>999)? 999: (minValue<-999)? -999: minValue;
+    minValue = (minValue > 999) ? 999 : (minValue < -999) ? -999 : minValue;
     // Вычитаем 0.1, чтобы 0 не считался ложным в дизъюнкции (иначе 0 || 100 дало бы 100).
     // Затем округлением возвращаем исходное целое число.
-    maxValue = (parseInt(document.querySelector('#inputMax').value)-0.1) || 100;
+    maxValue = (parseInt(document.querySelector('#inputMax').value) - 0.1) || 100;
     maxValue = Math.round(maxValue);
-    maxValue = (maxValue>999)? 999: (maxValue<-999)? -999: maxValue;
+    maxValue = (maxValue > 999) ? 999 : (maxValue < -999) ? -999 : maxValue;
     // Проверка на правильность введения
     if (minValue>maxValue){
-        [minValue,maxValue] =[maxValue,minValue] 
+        [minValue,maxValue] = [maxValue, minValue] 
 
     }
     
@@ -43,71 +41,72 @@ function startGame (){
     orderNumberField.innerText = orderNumber;
     answerField.innerText = generateAnswerVariants(answerNumber);
     console.log(answerNumber);
-    
 }
 
 document.querySelector('#startGameButton').addEventListener('click', startGame);
 const orderNumberField = document.getElementById('orderNumberField');
 const answerField = document.getElementById('answerField');
 
-
-// Функция для генерации вариантов вопроса с преобразованием числа в текстовый вид
-function generateAnswerVariants(answerNumber){
-    let answerPhrase;
-    let answerText= '';
-    
-    // проверка для сохранения знака числа и одновременно текстовая переменная для ответа
-    let minusText=(answerNumber<0)? "минус ": '';
+// проверка для сохранения знака числа и одновременно текстовая переменная для ответа
+function generateAnswerText (answerNumber){
+    let answerText = '';
+    let minusText=(answerNumber < 0)? "минус " : '';
     let buffAnswerNumber = Math.abs(answerNumber);
-    if (buffAnswerNumber==0){
+    
+    if (buffAnswerNumber == 0){
         answerText += "ноль"
     }
+    
     if (minusText) {
         answerText += `${minusText}`;
     }
-    if ((buffAnswerNumber/100)>=1) {
+    
+    if ((buffAnswerNumber / 100) >= 1) {
         answerText += `${UNITS_ARRAY[Math.trunc(buffAnswerNumber/100) - 1]} `;
-        buffAnswerNumber = buffAnswerNumber%100;
+        buffAnswerNumber = buffAnswerNumber % 100;
     }
-    if (buffAnswerNumber>= 10 && buffAnswerNumber<= 19) {
-        answerText += `${TEN_TO_NINETEEN[buffAnswerNumber%10]} `;
+    
+    if (buffAnswerNumber >= 10 && buffAnswerNumber <= 19) {
+        answerText += `${TEN_TO_NINETEEN[buffAnswerNumber % 10]} `;
         buffAnswerNumber = null;
     }
-    if ((buffAnswerNumber/10)>=1){
-            answerText += `${TENS[Math.trunc(buffAnswerNumber/10) - 2]} `;
-            buffAnswerNumber = buffAnswerNumber%10;
+    else if ((buffAnswerNumber / 10) >= 1){
+            answerText += `${TENS[Math.trunc(buffAnswerNumber / 10) - 2]} `;
+            buffAnswerNumber = buffAnswerNumber % 10;
         }
-    if (buffAnswerNumber>0){
-        answerText += `${UNITS[buffAnswerNumber-1]}`;
+    
+    if (buffAnswerNumber > 0){
+        answerText += `${UNITS[buffAnswerNumber - 1]}`;
         buffAnswerNumber = null;
-        
     } 
-    if (answerText.length>=20) {
+    
+    if (answerText.length >= 20) {
         answerText = answerNumber
     }
-    const phraseRandom = Math.round( Math.random()*3);
+    return answerText;
+}
+
+// Функция для генерации вариантов вопроса 
+function generateAnswerVariants(answerNumber, answerText) {
+    let answerPhrase;
+    let answerText = generateAnswerText(answerNumber);
+    const phraseRandom = Math.round(Math.random() * 3);
     switch (phraseRandom) {
         case 0:
             answerPhrase= `Да это легко! Ты загадал ${answerText}?`;
             break;
         case 1:
-            answerPhrase= `Вы загадали число ${answerText }?`;
+            answerPhrase= `Вы загадали число ${answerText}?`;
             break;
         default:
-            answerPhrase= `Может быть это ${answerText }?`;
+            answerPhrase= `Может быть это ${answerText}?`;
     }
-
     return answerPhrase;
-
 }
-
-
 
 document.getElementById('btnRetry').addEventListener('click', function () {
     document.querySelector('#game-card').hidden = true;
     document.querySelector('#inputCard').hidden = false;
-    
-
 })
 
 document.getElementById('btnOver').addEventListener('click', function () {
@@ -117,7 +116,6 @@ document.getElementById('btnOver').addEventListener('click', function () {
             const answerPhrase = (phraseRandom === 1) ?
                 `Вы загадали неправильное число!\n\u{1F914}` :
                 `Я сдаюсь..\n\u{1F92F}`;
-
             answerField.innerText = answerPhrase;
             gameRun = false;
         } else {
@@ -131,6 +129,7 @@ document.getElementById('btnOver').addEventListener('click', function () {
 })
 
 document.getElementById('btnLess').addEventListener('click', function () {
+    
     if (gameRun){
         // Если границы уже равны или после вычитания 1 верхняя граница станет меньше нижней,
         // то число угадать невозможно — завершаем игру. Происходит из-за округления вниз (ассиметрия)
@@ -148,7 +147,6 @@ document.getElementById('btnLess').addEventListener('click', function () {
             orderNumber++;
             orderNumberField.innerText = orderNumber;
             answerField.innerText = generateAnswerVariants(answerNumber);
-            
         }
     }
 })
@@ -156,7 +154,7 @@ document.getElementById('btnLess').addEventListener('click', function () {
 document.getElementById('btnEqual').addEventListener('click', function () {
     if (gameRun){
             let answerPhrase;
-            const phraseRandom = Math.round( Math.random()*3);
+            const phraseRandom = Math.round( Math.random() * 3);
             switch (phraseRandom) {
                 case 0:
                     answerPhrase= `Я всегда угадываю\n\u{1F60E}`;
@@ -167,7 +165,6 @@ document.getElementById('btnEqual').addEventListener('click', function () {
                 default:
                     answerPhrase= `Слишком изи\n\u{1F92D}`;
             }
-
                 answerField.innerText = answerPhrase
                 gameRun = false;
             }
@@ -176,6 +173,7 @@ document.getElementById('btnEqual').addEventListener('click', function () {
 document.querySelector('#min-number').addEventListener('click', ()=>{
         document.querySelector('#inputMin').value = -999;
 })
+
 document.querySelector('#max-number').addEventListener('click', ()=>{
         document.querySelector('#inputMax').value = 999;
 })
