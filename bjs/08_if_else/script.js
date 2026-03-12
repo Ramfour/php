@@ -89,7 +89,7 @@ function generateAnswerText (answerNumber){
 // Функция для генерации вариантов вопроса 
 function generateAnswerVariants(answerNumber, answerText) {
     let answerPhrase;
-    let answerText = generateAnswerText(answerNumber);
+    answerText = generateAnswerText(answerNumber);
     const phraseRandom = Math.round(Math.random() * 3);
     switch (phraseRandom) {
         case 0:
