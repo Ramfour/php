@@ -91,6 +91,40 @@ const personGenerator = {
         }
     }`,
 
+    // json c мужскими профессиями
+    maleOnlyJobs: `{
+        "count": 10,
+        "list": {
+            "id_1": "Проходчик",
+            "id_2": "Взрывник (в шахтах)",
+            "id_3": "Сталевар",
+            "id_4": "Литейщик металлов (на ручных работах)",
+            "id_5": "Водолаз",
+            "id_6": "Монтажник-высотник",
+            "id_7": "Машинист горных выемочных машин",
+            "id_8": "Котельщик (при ручной ковке и клепке)",
+            "id_9": "Аппаратчик-гидрометаллург",
+            "id_10": "Выморозчик судов"
+        }
+    }`,
+
+    // json c мужскими профессиями
+    commonJobs: `{
+        "count": 10,
+        "list": {
+            "id_1": "Водитель автомобиля",
+            "id_2": "Слесарь",
+            "id_3": "Сварщик",
+            "id_4": "Инженер",
+            "id_5": "Врач-стоматолог (имплантолог)",
+            "id_6": "Продавец / Менеджер по продажам",
+            "id_7": "Разработчик (IT-специалист, веб-разработчик)",
+            "id_8": "Повар / Кондитер (су-шеф)",
+            "id_9": "Маляр / Столяр",
+            "id_10": "Специалист по уходу (грумер, фитнес-тренер)"
+        }
+    }`,
+
     // Массив для исключений возраста
     AGE_EXCEPTIONS: [12, 13, 14] ,
     
@@ -141,11 +175,17 @@ const personGenerator = {
             ageText += ' лет'
        }
 
-       return `${ageText} (${this.currentYear - age} год)`
+       return `${this.currentYear - age} год рождения (${ageText})`
    },
 
    randomPatronomyc: function(gender) {
-        const json = (gender == this.GENDER_MALE)? this.patronymicMaleJson : this.patronymicFemaleJson;
+        const json = (gender === this.GENDER_MALE)? this.patronymicMaleJson : this.patronymicFemaleJson;
+        return this.randomValue(json)
+   },
+
+   randomJob: function(gender){
+        const jsonMale = (Math.random() < 0.5)? this.maleOnlyJobs : this.commonJobs;
+        const json = (gender === this.GENDER_MALE)? jsonMale : this.commonJobs;
         return this.randomValue(json)
    },
 
@@ -157,6 +197,7 @@ const personGenerator = {
         this.person.surname = this.randomSurname(this.person.gender);
         this.person.age = this.randomAge();
         this.person.patronymic = this.randomPatronomyc(this.person.gender);
+        this.person.job = this.randomJob(this.person.gender);
         return this.person;
     }
 };
