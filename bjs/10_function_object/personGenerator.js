@@ -57,7 +57,46 @@ const personGenerator = {
         }
     }`,
 
-    // Глобальные константы полов
+    // json с мужскими отчествами
+    patronymicMaleJson: `{
+        "count": 10,
+        "list": {
+            "id_1": "Александрович",
+            "id_2": "Максимович",
+            "id_3": "Иванович",
+            "id_4": "Артемович",
+            "id_5": "Дмитриевич",
+            "id_6": "Никитич",
+            "id_7": "Михайлович",
+            "id_8": "Даниилович",
+            "id_9": "Егорович",
+            "id_10": "Андреевич"
+        }
+    }`,
+    
+    // json с женскими отчествами
+    patronymicFemaleJson: `{
+        "count": 10,
+        "list": {
+            "id_1": "Александровна",
+            "id_2": "Максимовна",
+            "id_3": "Ивановна",
+            "id_4": "Артемовна",
+            "id_5": "Дмитриевна",
+            "id_6": "Никитична",
+            "id_7": "Михайловна",
+            "id_8": "Данииловна",
+            "id_9": "Егоровна",
+            "id_10": "Андреевна"
+        }
+    }`,
+
+    // Массив для исключений возраста
+    AGE_EXCEPTIONS: [12, 13, 14] ,
+    
+    // Текущая дата
+    currentYear: new Date().getFullYear(),
+
     GENDER_MALE: 'Мужчина',
     GENDER_FEMALE: 'Женщина',
 
@@ -81,14 +120,34 @@ const personGenerator = {
 
         const json = (gender === this.GENDER_MALE)? this.firstNameMaleJson : this.firstNameFemaleJson ;
         return this.randomValue(json)
-
     },
 
      randomSurname: function(gender) {
         const surname = this.randomValue(this.surnameJson);
         return (gender === this.GENDER_MALE)? surname : surname + 'a' ;
     },
+    
+    randomAge: function() {
+       let age = Math.round(Math.random()*80);
+       let ageText = age; 
 
+       if (age % 10 == 1 && age != 11){
+            ageText += ' год';
+       
+        }else if (( 4 >= (age % 10) && (age % 10) >= 2) && !(this.AGE_EXCEPTIONS.includes(age))) {
+            ageText += ' года'
+
+       }else{
+            ageText += ' лет'
+       }
+
+       return `${ageText} (${this.currentYear - age} год)`
+   },
+
+   randomPatronomyc: function(gender) {
+        const json = (gender == this.GENDER_MALE)? this.patronymicMaleJson : this.patronymicFemaleJson;
+        return this.randomValue(json)
+   },
 
     getPerson: function () {
         // Создаем объект пользователя
@@ -96,6 +155,8 @@ const personGenerator = {
         this.person.gender = this.randomGender();
         this.person.firstName = this.randomFirstName(this.person.gender);
         this.person.surname = this.randomSurname(this.person.gender);
+        this.person.age = this.randomAge();
+        this.person.patronymic = this.randomPatronomyc(this.person.gender);
         return this.person;
     }
 };
