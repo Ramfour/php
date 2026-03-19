@@ -115,13 +115,27 @@ const personGenerator = {
             "id_1": "Водитель автомобиля",
             "id_2": "Слесарь",
             "id_3": "Сварщик",
-            "id_4": "Инженер",
+            "id_4": "Безработный",
             "id_5": "Врач-стоматолог (имплантолог)",
             "id_6": "Продавец / Менеджер по продажам",
-            "id_7": "Разработчик (IT-специалист, веб-разработчик)",
+            "id_7": "Разработчик (веб-разработчик)",
             "id_8": "Повар / Кондитер (су-шеф)",
             "id_9": "Маляр / Столяр",
-            "id_10": "Специалист по уходу (грумер, фитнес-тренер)"
+            "id_10": "Специалист по уходу "
+        }
+    }`,
+
+    childStatusJson: `{
+        "count": 1,
+        "list": {
+            "id_1": "Иждивенец"
+        }
+    }`,
+
+    pensionerStatusJson: `{
+        "count": 1,
+        "list": {
+            "id_1": "Пенсионер"
         }
     }`,
 
@@ -129,7 +143,8 @@ const personGenerator = {
     AGE_EXCEPTIONS: [12, 13, 14] ,
     
     // Текущая дата
-    currentYear: new Date().getFullYear(),
+    currentDate: new Date(),
+
 
     GENDER_MALE: 'Мужчина',
     GENDER_FEMALE: 'Женщина',
@@ -160,24 +175,63 @@ const personGenerator = {
         const surname = this.randomValue(this.surnameJson);
         return (gender === this.GENDER_MALE)? surname : surname + 'a' ;
     },
-    
-    randomAge: function() {
-       let age = Math.round(Math.random()*80);
-       let ageText = age; 
+    // Генератор возраста
+    randomAge: function([randomDay, randomMonth, randomYear]) {
+        let age;
+        console.log([randomDay, randomMonth, randomYear])
+        if (randomMonth < this.currentDate.getMonth()){
+            age = this.currentDate.getFullYear() - (randomYear + 1);
+        } else if (randomMonth > this.currentDate.getMonth()){
+            age = this.currentDate.getFullYear() - randomYear;
+        }else if (randomMonth == this.currentDate.getMonth() && randomDay >= this.currentDate.getDate){
+            age = this.currentDate.getFullYear() - randomYear;
+        }
 
-       if (age % 10 == 1 && age != 11){
-            ageText += ' год';
-       
-        }else if (( 4 >= (age % 10) && (age % 10) >= 2) && !(this.AGE_EXCEPTIONS.includes(age))) {
-            ageText += ' года'
+        let ageText = age; 
 
-       }else{
-            ageText += ' лет'
-       }
+        if (age % 10 == 1 && age != 11){
+                ageText += ' год';
+        
+            }else if (( 4 >= (age % 10) && (age % 10) >= 2) && !(this.AGE_EXCEPTIONS.includes(age))) {
+                ageText += ' года'
 
-       return `${this.currentYear - age} год рождения (${ageText})`
+        }else{
+                ageText += ' лет'
+        }
+
+        return [`${randomDay}.${randomMonth}.${randomYear} дата рождения (${ageText})`, age]
    },
+   // Генератор даты рождения
+   randomDateOfBirth: function() {
 
+        const randomMonth = Math.round(Math.random() * 12);
+        const randomYear = Math.floor(Math.random() * (this.currentDate.getFullYear() - (this.currentDate.getFullYear() - 80) + 1) + (this.currentDate.getFullYear() - 80));
+        const randomDay = this.randomDayGenerator(randomMonth, randomYear);
+        return [randomDay, randomMonth, randomYear]
+        
+        
+    },
+
+    // генерация дня
+    randomDayGenerator: function (randomMonth, randomYear) {
+        // проверка на високосный год
+        const leapYearCheck = ((randomYear % 4 == 0 && randomYear % 100 != 0) || (randomYear % 400 == 0))? 1 : 0;
+        // коэффициент для учитывания февраля
+        const febCoeff = (randomMonth == 2)? 1 : 0;
+        let term1 = (randomMonth + Math.floor(randomMonth / 8)) % 2;
+        let term2 = 2 % randomMonth;
+        let term3 = 2 * Math.floor(1/randomMonth);
+        const numbDayOfMonth = 28 + term1 + term2 + term3 + febCoeff * leapYearCheck;
+        return numbDayOfMonth
+    },
+
+    // Функция ограничения даты
+    dateLimit: function () {
+
+
+
+    },
+    
    randomPatronomyc: function(gender) {
         const json = (gender === this.GENDER_MALE)? this.patronymicMaleJson : this.patronymicFemaleJson;
         return this.randomValue(json)
@@ -195,9 +249,10 @@ const personGenerator = {
         this.person.gender = this.randomGender();
         this.person.firstName = this.randomFirstName(this.person.gender);
         this.person.surname = this.randomSurname(this.person.gender);
-        this.person.age = this.randomAge();
+        this.person.age = this.randomAge(this.randomDateOfBirth())[0];
         this.person.patronymic = this.randomPatronomyc(this.person.gender);
         this.person.job = this.randomJob(this.person.gender);
         return this.person;
     }
+
 };
