@@ -233,11 +233,11 @@ const personGenerator = {
     },
 
     // Преобразователь даты в текст
-    dataToText: function ([day, month, year]){
+    dateToText: function ([day, month, year]){
         const date = [day, month, year];
         const dayText = (date[0] < 10)?  `0${date[0]}` : date[0];
         const monthText = (date[1] < 10)?   `0${date[1]}` : date [1];
-        return `${dayText}.${monthText}.${date[2]} года рождения `;
+        return `${dayText}.${monthText}.${date[2]}`;
     },
     
    randomPatronomyc: function(gender) {
@@ -266,12 +266,12 @@ const personGenerator = {
         this.person.gender = this.randomGender();
         this.person.firstName = this.randomFirstName(this.person.gender);
         this.person.surname = this.randomSurname(this.person.gender);
-        this.person.dateOfBirth = this.randomDateOfBirth();
-        this.person.age = this.randomAge(this.person.dateOfBirth);
+        const dateOfBirthArray = this.randomDateOfBirth();
+        const age = this.randomAge(dateOfBirthArray);
         this.person.patronymic = this.randomPatronomyc(this.person.gender);
-        this.person.job = this.randomJob(this.person.gender, this.person.age);
-        this.person.dateOfBirth = this.dataToText(this.person.dateOfBirth);
-        this.person.age = this.ageToText(this.person.age);
+        this.person.job = this.randomJob(this.person.gender, age);
+        this.person.dateOfBirth = this.dateToText(dateOfBirthArray);
+        this.person.age = this.ageToText(age);
         return this.person;
     }
 
