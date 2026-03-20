@@ -1,3 +1,6 @@
+/* Задание:
+Создание генератора случайных пользовательских данных: ФИО, пола, даты рождения и профессии. С возможностью сбрасывать информацию.*/
+
 // Объект с свойствами, которые идут для генерации данных людей
 const personGenerator = {
     // json'ы нужны для имитации получения данных с сервера файла, формата json
@@ -125,6 +128,7 @@ const personGenerator = {
         }
     }`,
 
+    // json'ы с "профессией" детей и пенсионеров
     childStatusJson: `{
         "count": 1,
         "list": {
@@ -136,6 +140,28 @@ const personGenerator = {
         "count": 1,
         "list": {
             "id_1": "Пенсионер"
+        }
+    }`,
+
+    //json c месяцами
+    /* В задании требование на месяцы, в которых только 31 день.
+    Убирать заранее из json их не стал, так такой подход
+    ограничивает универсальность json */
+    monthsNames: `{
+        "count": 12,
+        "list": {
+            "id_1": "января",
+            "id_2": "февраля",
+            "id_3": "марта",
+            "id_4": "апреля",
+            "id_5": "мая",
+            "id_6": "июня",
+            "id_7": "июля",
+            "id_8": "августа",
+            "id_9": "сентября",
+            "id_10": "октября",
+            "id_11": "ноября",
+            "id_12": "декабря"
         }
     }`,
 
@@ -192,34 +218,54 @@ const personGenerator = {
 
         return age
    },
+
    // Возраст + текст
    ageToText: function (age) {
         let ageText = age; 
-
         if (age % 10 == 1 && age != 11 || age == 1) {
                 ageText += ' год';
         
             }else if (( 4 >= (age % 10) && (age % 10) >= 2) && !(this.AGE_EXCEPTIONS.includes(age))) {
                 ageText += ' года'
-
         }else{
                 ageText += ' лет'
         }
         return ageText
    },
+
    // Генератор даты рождения
    randomDateOfBirth: function() {
-
-        const randomMonth = Math.floor(Math.random() * 12) + 1;
-        const randomYear = Math.floor(Math.random() * (this.currentDate.getFullYear() - (this.currentDate.getFullYear() - 80) + 1) + (this.currentDate.getFullYear() - 80));
+        // Месяца, в которых 31 день
+        const allowedMonths = [1, 3, 5, 7, 8, 10, 12];
+        // Так как Math.random [0;1), берем длину и сопоставляем по индексу со значением
+        const randomMonth = allowedMonths[Math.floor(Math.random() * allowedMonths.length)];
+        const randomYear = this.randomYearGenerator();
         const maxDay = this.randomDayGenerator(randomMonth, randomYear);
         const randomDay = Math.floor(Math.random() * maxDay) + 1;
-        return [randomDay, randomMonth, randomYear]
-        
-        
+        return [randomDay, randomMonth, randomYear];
     },
 
-    // генерация дня
+    // Генерация месяца
+    randomMonthGenerator: function() {
+        let randomMonth = Math.floor(Math.random() * 12) + 1; // + 1, так как в Date месяца начинаются с 0
+        return randomMonth
+    },
+
+    // Генерация года
+    randomYearGenerator: function() {
+        // Ограничение от 1 до 80 лет
+        let maxYear = this.currentDate.getFullYear() - 1;
+        let minYear = this.currentDate.getFullYear() - 80;
+        let randomYear = Math.floor(Math.random() * (maxYear - minYear + 1) + (minYear));
+        return randomYear
+    },
+
+    // Генерация количества дней в месяце с учётом високосного года.
+    
+    /*Использована математическая формула из статьи: https://habr.com/ru/articles/261773/
+    Альтернативный (и более простой) способ: new Date(year, month + 1, 0).getDate().
+    Оставил этот вариант как эксперимент с математическими вычислениями.*/
+    
     randomDayGenerator: function (randomMonth, randomYear) {
         // проверка на високосный год
         const leapYearCheck = ((randomYear % 4 == 0 && randomYear % 100 != 0) || (randomYear % 400 == 0))? 1 : 0;
@@ -236,8 +282,10 @@ const personGenerator = {
     dateToText: function ([day, month, year]){
         const date = [day, month, year];
         const dayText = (date[0] < 10)?  `0${date[0]}` : date[0];
-        const monthText = (date[1] < 10)?   `0${date[1]}` : date [1];
-        return `${dayText}.${monthText}.${date[2]}`;
+        const obj = JSON.parse(this.monthsNames);
+        const prop = `id_${month}`;
+        const monthText = obj.list[prop];
+        return `${dayText} ${monthText} ${date[2]}`;
     },
     
    randomPatronomyc: function(gender) {

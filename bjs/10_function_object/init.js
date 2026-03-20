@@ -1,5 +1,30 @@
+window.onload = function() {
+    saveText(); 
+    document.querySelector('#generateButton').addEventListener('click', generatePerson);
+    document.querySelector('#resetButton').addEventListener('click', resetPerson);
+};
 
-window.onload = function()
+function saveText() {
+    originalText.firstName = document.getElementById('firstNameOutput').innerText;
+    originalText.gender = document.getElementById('genderOutput').innerText;
+    originalText.surname = document.getElementById('surnameOutput').innerText;
+    originalText.age = document.getElementById('ageOutput').innerText;
+    originalText.birthYear = document.getElementById('birthYearOutput').innerText;
+    originalText.patronymic = document.getElementById('patronymicOutput').innerText;
+    originalText.job = document.getElementById('JobOutput').innerText;
+}
+
+function resetPerson() {
+    document.getElementById('firstNameOutput').innerText = originalText.firstName;
+    document.getElementById('genderOutput').innerText = originalText.gender;
+    document.getElementById('surnameOutput').innerText = originalText.surname;
+    document.getElementById('ageOutput').innerText = originalText.age;
+    document.getElementById('birthYearOutput').innerText = originalText.birthYear;
+    document.getElementById('patronymicOutput').innerText = originalText.patronymic;
+    document.getElementById('JobOutput').innerText = originalText.job;
+}
+
+function generatePerson ()
 {
     const initPerson = personGenerator.getPerson();
     document.getElementById('firstNameOutput').innerText = initPerson.firstName;
@@ -10,4 +35,7 @@ window.onload = function()
     document.getElementById('patronymicOutput').innerText = initPerson.patronymic;
     document.getElementById('JobOutput').innerText = initPerson.job;
 };
+
+let originalText = {};
+
 
