@@ -12,6 +12,7 @@ function saveText() {
     originalText.birthYear = document.getElementById('birthYearOutput').innerText;
     originalText.patronymic = document.getElementById('patronymicOutput').innerText;
     originalText.job = document.getElementById('JobOutput').innerText;
+    originalText.photo = document.getElementById('photoOutput').src;
 }
 
 function resetPerson() {
@@ -22,6 +23,7 @@ function resetPerson() {
     document.getElementById('birthYearOutput').innerText = originalText.birthYear;
     document.getElementById('patronymicOutput').innerText = originalText.patronymic;
     document.getElementById('JobOutput').innerText = originalText.job;
+    document.getElementById('photoOutput').src = originalText.photo;
 }
 
 function generatePerson ()
@@ -34,6 +36,7 @@ function generatePerson ()
     document.getElementById('birthYearOutput').innerText = initPerson.dateOfBirth;
     document.getElementById('patronymicOutput').innerText = initPerson.patronymic;
     document.getElementById('JobOutput').innerText = initPerson.job;
+    document.getElementById('photoOutput').src = initPerson.photo;
 };
 
 let originalText = {};

@@ -95,7 +95,7 @@ const personGenerator = {
     }`,
 
     // json c мужскими профессиями
-    maleOnlyJobs: `{
+    maleOnlyJobsJson: `{
         "count": 10,
         "list": {
             "id_1": "Проходчик",
@@ -112,7 +112,7 @@ const personGenerator = {
     }`,
 
     // json c мужскими профессиями
-    commonJobs: `{
+    commonJobsJson: `{
         "count": 10,
         "list": {
             "id_1": "Водитель автомобиля",
@@ -147,7 +147,7 @@ const personGenerator = {
     /* В задании требование на месяцы, в которых только 31 день.
     Убирать заранее из json их не стал, так такой подход
     ограничивает универсальность json */
-    monthsNames: `{
+    monthsNamesJson: `{
         "count": 12,
         "list": {
             "id_1": "января",
@@ -164,6 +164,27 @@ const personGenerator = {
             "id_12": "декабря"
         }
     }`,
+    
+    // json с фото пользователей (мужчины) 18–34 лет
+    maleYoungPhotoJson: `{
+        "count": 3,
+        "list": {
+            "id_1": "image/adult/male/young/person1.jpeg",
+            "id_2": "image/adult/male/young/person2.jpeg",
+            "id_3": "image/adult/male/young/person3.jpeg"
+        }
+    }`,
+
+    // json с фото пользователей (мужчины) 35-55 лет
+    maleMaturePhotoJson: `{
+        "count": 3,
+        "list": {
+            "id_1": "image/adult/male/mature/person1.jpeg",
+            "id_2": "image/adult/male/mature/person2.jpeg",
+            "id_3": "image/adult/male/mature/person3.jpeg"
+        }
+    }`,
+
 
     // Массив для исключений возраста
     AGE_EXCEPTIONS: [12, 13, 14] ,
@@ -282,7 +303,7 @@ const personGenerator = {
     dateToText: function ([day, month, year]){
         const date = [day, month, year];
         const dayText = (date[0] < 10)?  `0${date[0]}` : date[0];
-        const obj = JSON.parse(this.monthsNames);
+        const obj = JSON.parse(this.monthsNamesJson);
         const prop = `id_${month}`;
         const monthText = obj.list[prop];
         return `${dayText} ${monthText} ${date[2]}`;
@@ -294,19 +315,38 @@ const personGenerator = {
    },
 
    randomJob: function(gender, age){
-        const jsonMale = (Math.random() < 0.5)? this.maleOnlyJobs : this.commonJobs;
+        const jsonMale = (Math.random() < 0.5)? this.maleOnlyJobsJson : this.commonJobsJson;
         let json;
-        // console.log(age);
         if (age <= 17){
             json = this.childStatusJson
         }else if (age >= 55){
             json = this.pensionerStatusJson
         }else{
-            json = (gender === this.GENDER_MALE)? jsonMale : this.commonJobs;
+            json = (gender === this.GENDER_MALE)? jsonMale : this.commonJobsJson;
         }
 
         return this.randomValue(json)
    },
+
+    // Генерация случайного фото
+     randomPhotoGenerator: function(gender, age) {
+        let json;
+        if (age <= 34 && age >= 18){
+            if (gender === this.GENDER_MALE) {
+                json = this.maleYoungPhotoJson;
+                return this.randomValue(json)
+            }else{
+                return '#'
+            }
+        }else if (age >= 35 && age <= 55){
+                if (gender === this.GENDER_MALE) {
+                json = this.maleMaturePhotoJson;
+                return this.randomValue(json)
+            }else{
+                return '#'
+            }
+        }
+     },
 
     getPerson: function () {
         // Создаем объект пользователя
@@ -320,6 +360,7 @@ const personGenerator = {
         this.person.job = this.randomJob(this.person.gender, age);
         this.person.dateOfBirth = this.dateToText(dateOfBirthArray);
         this.person.age = this.ageToText(age);
+        this.person.photo = this.randomPhotoGenerator(this.person.gender, age);
         return this.person;
     }
 
