@@ -331,11 +331,8 @@ const personGenerator = {
    },
 
    // Генератор даты рождения
-   randomDateOfBirth: function() {
-        // Месяца, в которых 31 день
-        const allowedMonths = [1, 3, 5, 7, 8, 10, 12];
-        // Так как Math.random [0;1), берем длину и сопоставляем по индексу со значением
-        const randomMonth = allowedMonths[Math.floor(Math.random() * allowedMonths.length)];
+    randomDateOfBirth: function() {
+        const randomMonth = this.randomMonthGenerator(); // теперь генерируем любой месяц от 1 до 12
         const randomYear = this.randomYearGenerator();
         const maxDay = this.randomDayGenerator(randomMonth, randomYear);
         const randomDay = Math.floor(Math.random() * maxDay) + 1;
