@@ -17,6 +17,7 @@
 3. [Еще не пройдено]
 ---
 [Github Pages](https://ramfour.github.io/php/)
+[Картинки сгеренированны на сайте freepik](http://www.freepik.com)
 
 
 [Unofficial JavaScript logo by Chris Williams, from GitHub logo.js, under very permissive licensing (WTFPL).](https://github.com/voodootikigod/logo.js)

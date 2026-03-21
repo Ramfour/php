@@ -165,7 +165,7 @@ const personGenerator = {
         }
     }`,
     
-    // json с фото пользователей (мужчины) 18–34 лет
+    // json с фото пользователей (мужской пол) 18–34 лет
     maleYoungPhotoJson: `{
         "count": 3,
         "list": {
@@ -175,7 +175,7 @@ const personGenerator = {
         }
     }`,
 
-    // json с фото пользователей (мужчины) 35-55 лет
+    // json с фото пользователей (мужской пол) 35-55 лет
     maleMaturePhotoJson: `{
         "count": 3,
         "list": {
@@ -184,6 +184,82 @@ const personGenerator = {
             "id_3": "image/adult/male/mature/person3.jpeg"
         }
     }`,
+
+    // json с фото пользователей (женский пол) 18–34 лет
+    femaleYoungPhotoJson: `{
+        "count": 8,
+        "list": {
+            "id_1": "image/adult/female/young/person1.jpeg",
+            "id_2": "image/adult/female/young/person2.jpeg",
+            "id_3": "image/adult/female/young/person3.jpeg",
+            "id_4": "image/adult/female/young/person4.jpeg",
+            "id_5": "image/adult/female/young/person5.jpeg",
+            "id_6": "image/adult/female/young/person6.jpeg",
+            "id_7": "image/adult/female/young/person7.jpeg",
+            "id_8": "image/adult/female/young/person8.jpeg"
+        }
+    }`,
+
+    // json с фото пользователей (женский пол) 35-55 лет
+    femaleMaturePhotoJson: `{
+        "count": 5,
+        "list": {
+            "id_1": "image/adult/female/mature/person1.jpeg",
+            "id_2": "image/adult/female/mature/person2.jpeg",
+            "id_3": "image/adult/female/mature/person3.jpeg",
+            "id_4": "image/adult/female/mature/person4.jpeg",
+            "id_5": "image/adult/female/mature/person5.jpeg"
+        }
+    }`,
+
+    // json с фото - заглушкой (дети от 1 до 15 лет)
+    childPhotoJson: `{
+        "count": 1,
+        "list": {
+            "id_1": "image/kid/child/person1.jpeg"
+        }
+    }`,
+
+    // json с фото пользователей (женский пол) (дети от 16 до 17 лет)
+    femaleKidPhotoJson: `{
+        "count": 3,
+        "list": {
+            "id_1": "image/kid/female/person1.jpeg",
+            "id_2": "image/kid/female/person2.jpeg",
+            "id_3": "image/kid/female/person3.jpeg"
+        }
+    }`,   
+
+
+    // json с фото пользователей (мужской пол) (дети от 16 до 17 лет)
+    maleKidPhotoJson: `{
+        "count": 3,
+        "list": {
+            "id_1": "image/kid/male/person1.jpeg",
+            "id_2": "image/kid/male/person2.jpeg",
+            "id_3": "image/kid/male/person3.jpeg"
+        }
+    }`,   
+
+    // json с фото пользователей (женский пол) (дети от 56 до 80 лет)
+    femalePensionerPhotoJson: `{
+        "count": 3,
+        "list": {
+            "id_1": "image/pensioner/female/person1.jpeg",
+            "id_2": "image/pensioner/female/person2.jpeg",
+            "id_3": "image/pensioner/female/person3.jpeg"
+        }
+    }`,   
+
+    // json с фото пользователей (мужской пол) (дети от 56 до 80 лет)
+    malePensionerPhotoJson: `{
+        "count": 3,
+        "list": {
+            "id_1": "image/pensioner/male/person1.jpeg",
+            "id_2": "image/pensioner/male/person2.jpeg",
+            "id_3": "image/pensioner/male/person3.jpeg"
+        }
+    }`,   
 
 
     // Массив для исключений возраста
@@ -331,21 +407,44 @@ const personGenerator = {
     // Генерация случайного фото
      randomPhotoGenerator: function(gender, age) {
         let json;
+        if (age < 16){
+            json = this.childPhotoJson
+            return this.randomValue(json)
+        }
         if (age <= 34 && age >= 18){
             if (gender === this.GENDER_MALE) {
                 json = this.maleYoungPhotoJson;
                 return this.randomValue(json)
             }else{
-                return '#'
+                json = this.femaleYoungPhotoJson;
+                return this.randomValue(json)
             }
         }else if (age >= 35 && age <= 55){
-                if (gender === this.GENDER_MALE) {
+            if (gender === this.GENDER_MALE) {
                 json = this.maleMaturePhotoJson;
                 return this.randomValue(json)
             }else{
-                return '#'
+                json = this.femaleMaturePhotoJson;
+                return this.randomValue(json)
+            }
+        }else if (age > 55){
+            if (gender === this.GENDER_MALE) {
+                json = this.malePensionerPhotoJson;
+                return this.randomValue(json)
+            }else{
+                json = this.femalePensionerPhotoJson;
+                return this.randomValue(json)
+            }
+        }else if (age >= 16 && age <=17) {
+                if (gender === this.GENDER_MALE) {
+                json = this.maleKidPhotoJson;
+                return this.randomValue(json)
+            }else{
+                json = this.femaleKidPhotoJson;
+                return this.randomValue(json)
             }
         }
+
      },
 
     getPerson: function () {
