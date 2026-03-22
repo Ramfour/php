@@ -60,39 +60,6 @@ const personGenerator = {
         }
     }`,
 
-    // json с мужскими отчествами
-    patronymicMaleJson: `{
-        "count": 10,
-        "list": {
-            "id_1": "Александрович",
-            "id_2": "Максимович",
-            "id_3": "Иванович",
-            "id_4": "Артемович",
-            "id_5": "Дмитриевич",
-            "id_6": "Никитич",
-            "id_7": "Михайлович",
-            "id_8": "Даниилович",
-            "id_9": "Егорович",
-            "id_10": "Андреевич"
-        }
-    }`,
-    
-    // json с женскими отчествами
-    patronymicFemaleJson: `{
-        "count": 10,
-        "list": {
-            "id_1": "Александровна",
-            "id_2": "Максимовна",
-            "id_3": "Ивановна",
-            "id_4": "Артемовна",
-            "id_5": "Дмитриевна",
-            "id_6": "Никитична",
-            "id_7": "Михайловна",
-            "id_8": "Данииловна",
-            "id_9": "Егоровна",
-            "id_10": "Андреевна"
-        }
-    }`,
 
     // json c мужскими профессиями
     maleOnlyJobsJson: `{
@@ -341,7 +308,7 @@ const personGenerator = {
 
     // Генерация месяца
     randomMonthGenerator: function() {
-        let randomMonth = Math.floor(Math.random() * 12) + 1; // + 1, так как в Date месяца начинаются с 0
+        let randomMonth = this.randomIntNumber(12, 1);
         return randomMonth
     },
 
@@ -350,7 +317,7 @@ const personGenerator = {
         // Ограничение от 1 до 80 лет
         let maxYear = this.currentDate.getFullYear() - 1;
         let minYear = this.currentDate.getFullYear() - 80;
-        let randomYear = Math.floor(Math.random() * (maxYear - minYear + 1) + (minYear));
+        let randomYear = this.randomIntNumber(maxYear, minYear);
         return randomYear
     },
 
@@ -381,10 +348,21 @@ const personGenerator = {
         const monthText = obj.list[prop];
         return `${dayText} ${monthText} ${date[2]}`;
     },
-    
-   randomPatronomyc: function(gender) {
-        const json = (gender === this.GENDER_MALE)? this.patronymicMaleJson : this.patronymicFemaleJson;
-        return this.randomValue(json)
+
+    // Образование и написание отчеств http://zags.kurganobl.ru/obrazovanie_i_napisanie_otchestv.html
+     randomPatronomyc: function(gender) {
+        let firstName = this.randomFirstName(this.GENDER_MALE);
+        const lastLetter = firstName.slice(-1);
+        if (["б", "в", "г", "д", "з", "к", "л", "м", "н", "п", "р", "с", "т", "ф", "х"].includes(lastLetter)){
+            return (gender === this.GENDER_MALE)? firstName + "ович" : firstName + "овна";
+        }else if (["а", "у", "ы"].includes(lastLetter)){
+            return (gender === this.GENDER_MALE)? firstName.slice(0, -1) + "ич" : firstName.slice(0, -1) + "ична";
+        }else if (lastLetter === "й") {
+            return (gender === this.GENDER_MALE)? firstName.slice(0, -1) + "евич" : firstName.slice(0, -1) + "евна";
+        }else{
+            return (gender === this.GENDER_MALE) ? firstName + "евич" : firstName + "евна";
+        }
+
    },
 
    randomJob: function(gender, age){
